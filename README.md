@@ -1,3 +1,8 @@
+fork/branch for performance optimization
+- simplify detection of file rotation (skip signature checking, just length based)
+- RandomAccessFile read buffering (profiling showed a lot of cpu activity due to byte-by-byte file reading IO)
+- drop support for compressed file, redundant IO operations (seek) if performing tail on live log file
+
 # logstash-forwarder-java
 
 ## What is this ?
