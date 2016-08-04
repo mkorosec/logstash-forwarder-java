@@ -85,11 +85,7 @@ public class FileReader extends Reader {
 					logger.trace("File : " + file + " pointer : " + pointer);
 					logger.trace("Space left in spool : " + spaceLeftInSpool);
 				}
-				if(isCompressedFile(state)) {
-					pointer = file.length();
-				} else {
-					pointer = readLines(state, spaceLeftInSpool);
-				}
+				pointer = readLines(state, spaceLeftInSpool);
 				numberOfEvents = eventList.size() - eventListSizeBefore; 
 			}
 		} catch(IOException e) {
@@ -97,27 +93,6 @@ public class FileReader extends Reader {
 		}
 		pointerMap.put(file, pointer);
 		return numberOfEvents; // Return number of events read
-	}
-
-	private boolean isCompressedFile(FileState state) {
-		RandomAccessFile reader = state.getRandomAccessFile();
-		try {
-			for(byte[] magic : MAGICS) {
-				byte[] fileBytes = new byte[magic.length]; 
-				reader.seek(0);
-				int read = reader.read(fileBytes);
-				if (read != magic.length) {
-					continue;
-				}
-				if(Arrays.equals(magic, fileBytes)) {
-					logger.debug("Compressed file detected : " + state.getFile());
-					return true;
-				}
-			}
-		} catch(IOException e) {
-			logger.warn("Exception raised while reading file : " + state.getFile(), e);
-		}
-		return false;
 	}
 
 	private long readLines(FileState state, int spaceLeftInSpool) {
