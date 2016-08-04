@@ -25,6 +25,7 @@ import java.io.RandomAccessFile;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import info.fetter.logstashforwarder.util.BufferedRandomAccessFileReadOnly;
 
 public class FileState {
 	@JsonIgnore
@@ -56,7 +57,8 @@ public class FileState {
 		this.file = file;
 		directory = file.getCanonicalFile().getParent();
 		fileName = file.getName();
-		randomAccessFile = new RandomAccessFile(file, "r");
+		//randomAccessFile = new RandomAccessFile(file, "r");
+		randomAccessFile = new BufferedRandomAccessFileReadOnly(file, "r", 1024*8);
 		lastModified = file.lastModified();
 		size = file.length();
 	}
