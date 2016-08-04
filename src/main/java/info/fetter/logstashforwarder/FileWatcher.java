@@ -137,6 +137,12 @@ public class FileWatcher {
 				if(oldState.getSize() > state.getSize()) {
 					logger.trace("File shorter : file can't be the same");
 				} else {
+					//simplify file checking
+			                    logger.info("File longer, skip all other validation - file is the same!");
+			                    state.setOldFileState(oldState);
+			                    continue;					
+					
+					/*
 					if(oldState.getSignatureLength() == state.getSignatureLength() && oldState.getSignature() == state.getSignature()) {
 						state.setOldFileState(oldState);
 						logger.trace("Same signature size and value : file is the same");
@@ -153,6 +159,7 @@ public class FileWatcher {
 					} else if(oldState.getSignatureLength() > state.getSignatureLength()){
 						logger.trace("Signature shorter : file can't be the same");
 					}
+					*/
 				}
 			}
 
